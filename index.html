@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b1220">
+<meta name="description" content="A responsive analog and digital world clock with live time-zone switching.">
+<title>Chronos — Digital Clock</title>
+<style>
+:root{color-scheme:dark;--bg:#08111f;--panel:rgba(17,29,48,.86);--text:#f3f7ff;--muted:#9aabc4;--line:rgba(167,190,222,.15);--accent:#6ee7d2;--blue:#8cb7ff;--glow:rgba(110,231,210,.16);--shadow:0 28px 80px rgba(0,0,0,.32)}
+*{box-sizing:border-box}body{min-height:100vh;margin:0;padding:26px;display:grid;place-items:center;overflow-x:hidden;color:var(--text);background:radial-gradient(ellipse at 15% 8%,rgba(61,111,174,.24),transparent 38%),radial-gradient(ellipse at 88% 82%,rgba(32,164,151,.14),transparent 34%),var(--bg);font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;transition:background .25s,color .25s}
+body.light{color-scheme:light;--bg:#eef3fa;--panel:rgba(255,255,255,.88);--text:#18253a;--muted:#61718a;--line:rgba(49,72,105,.14);--accent:#087f76;--blue:#326acb;--glow:rgba(8,127,118,.12);--shadow:0 28px 80px rgba(37,59,88,.13);background:radial-gradient(ellipse at 15% 8%,rgba(108,157,227,.18),transparent 38%),var(--bg)}
+button,select{font:inherit}button:focus-visible,select:focus-visible{outline:3px solid var(--blue);outline-offset:3px}.app{width:min(100%,960px)}.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:20px}.brand{display:flex;align-items:center;gap:12px}.brand-mark{display:grid;place-items:center;width:44px;height:44px;border-radius:14px;color:#06151d;background:linear-gradient(135deg,var(--accent),var(--blue));box-shadow:0 8px 28px var(--glow)}.brand-mark svg{width:23px}.brand-name{margin:0;font-size:1.05rem;font-weight:800;letter-spacing:.06em}.brand-sub{margin:3px 0 0;color:var(--muted);font-size:.76rem;letter-spacing:.1em;text-transform:uppercase}.actions{display:flex;gap:8px}.icon-button{display:grid;place-items:center;width:42px;height:42px;padding:0;border:1px solid var(--line);border-radius:13px;color:var(--text);background:var(--panel);cursor:pointer;transition:transform .18s,border-color .18s}.icon-button:hover{transform:translateY(-2px);border-color:var(--accent)}.icon-button svg{width:18px}
+.card{position:relative;isolation:isolate;padding:clamp(22px,5vw,46px);overflow:hidden;border:1px solid var(--line);border-radius:30px;background:var(--panel);box-shadow:var(--shadow);backdrop-filter:blur(18px)}.card:before{content:"";position:absolute;z-index:-1;width:350px;height:350px;right:-180px;top:-190px;border-radius:50%;background:var(--glow)}.eyebrow{display:flex;justify-content:center;align-items:center;gap:9px;color:var(--muted);font-size:.78rem;letter-spacing:.16em;text-transform:uppercase}.live-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 5px var(--glow)}
+.layout{display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:clamp(24px,6vw,64px);margin:32px 0}.clock-wrap{display:grid;place-items:center;min-width:0}.clock{position:relative;width:min(100%,350px);aspect-ratio:1;border:1px solid rgba(150,190,213,.24);border-radius:50%;background:radial-gradient(circle at 50% 42%,rgba(255,255,255,.06),transparent 56%),linear-gradient(145deg,#183047,#071220);box-shadow:inset 0 0 0 8px rgba(255,255,255,.018),inset 0 0 35px rgba(0,0,0,.3),0 20px 55px rgba(0,0,0,.18),0 0 0 12px var(--glow)}body.light .clock{background:radial-gradient(circle at 50% 35%,#fff,#dce7f3 78%)}
+.tick{position:absolute;left:50%;top:4.5%;width:2px;height:7%;border-radius:4px;background:rgba(224,240,255,.5);transform-origin:50% 650%}.tick.major{width:4px;height:10%;background:var(--accent)}.numeral{position:absolute;color:#edf7ff;font-size:clamp(.9rem,2vw,1.2rem);font-weight:650;transform:translate(-50%,-50%)}body.light .numeral{color:#263e58}.hand{position:absolute;left:50%;bottom:50%;z-index:2;border-radius:99px;transform-origin:50% 100%;will-change:transform}.hour{width:7px;height:25%;margin-left:-3.5px;background:#f4f7ff}.minute{width:4px;height:34%;margin-left:-2px;background:var(--blue)}.second{width:2px;height:39%;margin-left:-1px;background:#ffbd78}.hub{position:absolute;z-index:4;left:50%;top:50%;width:15px;height:15px;border:3px solid #13253b;border-radius:50%;background:var(--accent);transform:translate(-50%,-50%);box-shadow:0 0 0 5px rgba(110,231,210,.12)}
+.panel{min-width:0}.location-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}.pin{display:grid;place-items:center;flex:0 0 auto;width:38px;height:38px;border-radius:12px;color:var(--accent);background:var(--glow)}.pin svg{width:19px}.location{margin:0;font-size:clamp(1.2rem,2.5vw,1.6rem);font-weight:750}.zone{margin:4px 0 0;color:var(--muted);font-size:.82rem}.time{margin:18px 0 8px;font-size:clamp(2.2rem,5.4vw,3.8rem);font-weight:750;letter-spacing:-.055em;line-height:1.08;font-variant-numeric:tabular-nums;white-space:nowrap}.date{margin:0;color:var(--muted);font-size:.94rem;line-height:1.6}.controls{display:flex;flex-wrap:wrap;gap:8px;margin-top:25px}.pill{display:inline-flex;align-items:center;justify-content:center;min-height:38px;padding:8px 13px;border:1px solid var(--line);border-radius:999px;color:var(--text);background:var(--panel);font-size:.8rem;cursor:pointer;transition:border-color .18s,background .18s}.pill:hover,.pill[aria-pressed=true]{border-color:var(--accent);background:var(--glow)}
+.stats{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:12px}.stat{min-width:0;padding:17px 18px;border:1px solid var(--line);border-radius:18px;background:var(--panel)}.stat-label{color:var(--muted);font-size:.76rem}.stat-value{margin:9px 0 0;font-size:1rem;font-weight:700;overflow-wrap:anywhere}.timezone{width:100%;margin-top:7px;padding:5px 16px 5px 0;border:0;color:var(--text);background:transparent;font-weight:700;cursor:pointer}.timezone option{color:#142039;background:white}.footer{display:flex;justify-content:space-between;gap:12px;margin:18px 4px 0;color:var(--muted);font-size:.76rem}.footer span:last-child{text-align:right}
+@media(max-width:700px){body{padding:16px 12px}.card{border-radius:24px}.layout{grid-template-columns:1fr;gap:32px;margin:26px 0}.clock{width:min(72vw,300px)}.panel{text-align:center}.location-row{justify-content:center}.time{font-size:clamp(2.5rem,10vw,3.5rem)}.controls{justify-content:center}.stats{grid-template-columns:1fr 1fr}.stat:first-child{grid-column:1/-1}.footer{flex-direction:column;align-items:center;text-align:center}.footer span:last-child{text-align:center}}
+@media(max-width:380px){body{padding:10px}.card{padding:20px 14px}.time{font-size:2.2rem}.stats{gap:8px}.stat{padding:13px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<main class="app">
+<header class="topbar">
+  <div class="brand"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 6v6l4 2"/></svg></div><div><p class="brand-name">CHRONOS</p><p class="brand-sub">Time, beautifully told</p></div></div>
+  <div class="actions"><button class="icon-button" id="format" type="button" title="Switch 12/24-hour format" aria-label="Switch time format"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></button><button class="icon-button" id="theme" type="button" title="Switch light/dark theme" aria-label="Switch color theme"><svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.5 1.5m11.2 11.2 1.5 1.5M2 12h2m16 0h2M4.9 19.1l1.5-1.5M17.6 6.4l1.5-1.5"/></svg></button></div>
+</header>
+<section class="card" aria-label="Live world clock">
+  <div class="eyebrow"><span class="live-dot" aria-hidden="true"></span> Live world clock</div>
+  <div class="layout">
+    <div class="clock-wrap"><div class="clock" role="img" aria-label="Analog clock face"><div id="ticks" aria-hidden="true"></div><div id="numerals" aria-hidden="true"></div><div class="hand hour" id="hourHand"></div><div class="hand minute" id="minuteHand"></div><div class="hand second" id="secondHand"></div><div class="hub"></div></div></div>
+    <div class="panel">
+      <div class="location-row"><div class="pin" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg></div><div><h1 class="location" id="location">India</h1><p class="zone" id="zone">Asia/Kolkata · IST</p></div></div>
+      <p class="time" id="time" aria-live="off">00:00:00</p><p class="date" id="date">Loading date…</p>
+      <div class="controls"><button class="pill" id="seconds" aria-pressed="true" type="button">Seconds: on</button><button class="pill" id="smooth" aria-pressed="false" type="button">Smooth sweep: off</button></div>
+    </div>
+  </div>
+  <div class="stats">
+    <div class="stat"><div class="stat-label">World time zone</div><select class="timezone" id="timezone" aria-label="Choose a city and time zone"><option value="Asia/Kolkata">India · Kolkata</option><option value="Europe/London">United Kingdom · London</option><option value="America/New_York">United States · New York</option><option value="Asia/Tokyo">Japan · Tokyo</option><option value="Australia/Sydney">Australia · Sydney</option><option value="Europe/Paris">France · Paris</option><option value="Asia/Dubai">United Arab Emirates · Dubai</option><option value="America/Los_Angeles">United States · Los Angeles</option><option value="UTC">Coordinated Universal Time · UTC</option></select></div>
+    <div class="stat"><div class="stat-label">Day of the year</div><p class="stat-value" id="day">—</p></div>
+    <div class="stat"><div class="stat-label">UTC offset</div><p class="stat-value" id="offset">UTC+05:30</p></div>
+  </div>
+</section>
+<footer class="footer"><span>Runs entirely in your browser · No tracking</span><span id="status">Clock updates automatically</span></footer>
+</main>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const cities = {
+    "Asia/Kolkata":["India","IST"],"Europe/London":["United Kingdom","London time"],
+    "America/New_York":["New York","Eastern Time"],"Asia/Tokyo":["Tokyo","JST"],
+    "Australia/Sydney":["Sydney","Sydney time"],"Europe/Paris":["Paris","Central European Time"],
+    "Asia/Dubai":["Dubai","GST"],"America/Los_Angeles":["Los Angeles","Pacific Time"],
+    "UTC":["Coordinated Universal Time","UTC"]
+  };
+  let zone="Asia/Kolkata",hour24=true,showSeconds=true,smooth=false,lastDate="";
+  const reduced=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  for(let i=0;i<60;i++){const el=document.createElement("span");el.className="tick"+(i%5===0?" major":"");el.style.transform=`translateX(-50%) rotate(${i*6}deg)`;$("ticks").append(el);}
+  for(let n=1;n<=12;n++){const a=(n*30-90)*Math.PI/180,el=document.createElement("span");el.className="numeral";el.textContent=n;el.style.left=`${50+Math.cos(a)*36}%`;el.style.top=`${50+Math.sin(a)*36}%`;$("numerals").append(el);}
+  function getParts(now){return Object.fromEntries(new Intl.DateTimeFormat("en-GB",{timeZone:zone,hour:"2-digit",minute:"2-digit",second:"2-digit",hourCycle:"h23",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(now).map(p=>[p.type,p.value]));}
+  function update(){
+    const now=new Date(),p=getParts(now),h=+p.hour%24,m=+p.minute,s=+p.second,frac=smooth&&!reduced?now.getMilliseconds()/1000:0,sv=s+frac,mv=m+sv/60,hv=h%12+mv/60;
+    $("hourHand").style.transform=`rotate(${hv*30}deg)`;$("minuteHand").style.transform=`rotate(${mv*6}deg)`;$("secondHand").style.transform=`rotate(${sv*6}deg)`;$("secondHand").style.visibility=showSeconds?"visible":"hidden";
+    $("time").textContent=new Intl.DateTimeFormat(undefined,{timeZone:zone,hour:"2-digit",minute:"2-digit",...(showSeconds?{second:"2-digit"}:{}),hour12:!hour24}).format(now);
+    $("location").textContent=cities[zone][0];$("zone").textContent=`${zone} · ${cities[zone][1]}`;$("date").textContent=new Intl.DateTimeFormat(undefined,{timeZone:zone,weekday:"long",month:"long",day:"numeric",year:"numeric"}).format(now);
+    const z=new Intl.DateTimeFormat("en-US",{timeZone:zone,timeZoneName:"longOffset",hour:"2-digit"}).formatToParts(now).find(x=>x.type==="timeZoneName")?.value||"GMT";$("offset").textContent=z.replace("GMT","UTC");
+    const year=+p.year,day=Math.floor((Date.UTC(year,+p.month-1,+p.day)-Date.UTC(year,0,0))/86400000),days= (Date.UTC(year+1,0,1)-Date.UTC(year,0,1))/86400000;$("day").textContent=`${day} of ${days}`;
+    const key=`${p.year}-${p.month}-${p.day}`;if(key!==lastDate){lastDate=key;$("status").textContent=`Date synced · ${key}`;}
+  }
+  $("timezone").addEventListener("change",e=>{zone=e.target.value;update();});
+  $("format").addEventListener("click",()=>{hour24=!hour24;$("format").setAttribute("aria-label",`Switch to ${hour24?"12":"24"}-hour format`);update();});
+  $("seconds").addEventListener("click",()=>{showSeconds=!showSeconds;$("seconds").textContent=`Seconds: ${showSeconds?"on":"off"}`;$("seconds").setAttribute("aria-pressed",String(showSeconds));update();});
+  $("smooth").addEventListener("click",()=>{if(reduced){$("status").textContent="Smooth sweep disabled by reduced-motion setting";return;}smooth=!smooth;$("smooth").textContent=`Smooth sweep: ${smooth?"on":"off"}`;$("smooth").setAttribute("aria-pressed",String(smooth));update();});
+  $("theme").addEventListener("click",()=>{const light=document.body.classList.toggle("light");$("theme").setAttribute("aria-label",`Switch to ${light?"dark":"light"} theme`);$("themeIcon").innerHTML=light?'<path d="M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z"/>':'<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.5 1.5m11.2 11.2 1.5 1.5M2 12h2m16 0h2M4.9 19.1l1.5-1.5M17.6 6.4l1.5-1.5"/>';});
+  update();setInterval(update,250);
+})();
+</script>
+</body>
+</html>
