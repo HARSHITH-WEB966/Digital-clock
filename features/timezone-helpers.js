@@ -1,4 +1,5 @@
-export const timezoneCatalog = {
+yooexport const timezoneCatalog = {
+  
   "Asia/Kolkata": { city: "Kolkata", label: "India", offset: "+05:30" },
   "Europe/London": { city: "London", label: "United Kingdom", offset: "+00:00" },
   "America/New_York": { city: "New York", label: "United States", offset: "-04:00" },
@@ -8,6 +9,7 @@ export const timezoneCatalog = {
   "Asia/Dubai": { city: "Dubai", label: "UAE", offset: "+04:00" },
   "America/Los_Angeles": { city: "Los Angeles", label: "United States", offset: "-07:00" },
   "UTC": { city: "UTC", label: "Universal Time", offset: "+00:00" }
+
 };
 
 export function getCurrentTimeParts(zone = "Asia/Kolkata") {
