@@ -13,8 +13,8 @@ yooexport const timezoneCatalog = {
 };
 
 export function getCurrentTimeParts(zone = "Asia/Kolkata") {
-  const now = new Date();
-  const parts = new Intl.DateTimeFormat("en-GB", {
+  const now=new Date();
+  const parts=new Intl.DateTimeFormat("en-GB",{
     timeZone: zone,
     hour: "2-digit",
     minute: "2-digit",
