@@ -10,7 +10,7 @@ A modern, responsive analog + digital world clock built with **HTML, CSS, and va
 - **12/24-hour format toggle** and optional seconds display.
 - **Light and dark themes** with a responsive glass-inspired interface.
 - **Time-zone details**, including UTC offset and day of the year.
-- **Responsive layout** for mobile, tablet, and desktop.
+- **Responsive layout** for both mobile and desktop.
 - **Accessibility-minded controls**, keyboard focus indicators, descriptive labels, and reduced-motion support.
 - **Privacy-friendly**: time calculations happen in your browser; no data is sent to a server.  
 
