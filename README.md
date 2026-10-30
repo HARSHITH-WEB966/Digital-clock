@@ -12,7 +12,7 @@ A modern, responsive analog + digital world clock built with **HTML, CSS, and va
 - **Time-zone details**, including UTC offset and day of the year.
 - **Responsive layout** for mobile, tablet, and desktop.
 - **Accessibility-minded controls**, keyboard focus indicators, descriptive labels, and reduced-motion support.
-- **Privacy-friendly**: time calculations happen in your browser; no data is sent to a server.
+- **Privacy-friendly**: time calculations happen in your browser; no data is sent to a server.  
 
 ## Run locally
 
